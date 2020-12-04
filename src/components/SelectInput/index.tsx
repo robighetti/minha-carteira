@@ -5,7 +5,7 @@ import { Container } from './styles';
 interface ISelectInputProps {
   options: {
     value: string | number;
-    label: string;
+    label: string | number;
   }[];
 }
 
