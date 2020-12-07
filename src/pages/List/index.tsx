@@ -31,40 +31,38 @@ interface IData {
 }
 
 const List: React.FC<IRouteParams> = ({ match }) => {
-  const { type } = match.params;
+  const { type: movementType } = match.params;
 
   const [data, setData] = useState<IData[]>([]);
-  const [monthSelected, setMonthSelected] = useState<string>(
-    String(new Date().getMonth() + 1),
+  const [monthSelected, setMonthSelected] = useState<number>(
+    new Date().getMonth() + 1,
   );
-  const [yearSelected, setYearSelected] = useState<string>(
-    String(new Date().getFullYear()),
+  const [yearSelected, setYearSelected] = useState<number>(
+    new Date().getFullYear(),
   );
   const [selectedFrequency, setSelectedFrequency] = useState([
     'recorrente',
     'eventual',
   ]);
 
-  const options = useMemo(() => {
-    return type === 'entry-balance'
+  const pageDate = useMemo(() => {
+    return movementType === 'entry-balance'
       ? {
           title: 'Entradas',
           lineColor: '#f7931b',
+          data: gains,
         }
       : {
           title: 'Saídas',
           lineColor: '#e44c4e',
+          data: expenses,
         };
-  }, [type]);
-
-  const listData = useMemo(() => {
-    return type === 'entry-balance' ? gains : expenses;
-  }, [type]);
+  }, [movementType]);
 
   const years = useMemo(() => {
     const uniqueYears: number[] = [];
 
-    listData.forEach((item) => {
+    pageDate.data.forEach((item) => {
       const date = new Date(item.date);
       const year = date.getFullYear();
 
@@ -79,7 +77,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
         label: aux,
       };
     });
-  }, [listData]);
+  }, [pageDate.data]);
 
   const months = useMemo(() => {
     return listOfMonths.map((month, index) => {
@@ -105,10 +103,10 @@ const List: React.FC<IRouteParams> = ({ match }) => {
   };
 
   useEffect(() => {
-    const filteredDate = listData.filter((list) => {
+    const filteredDate = pageDate.data.filter((list) => {
       const date = new Date(list.date);
-      const month = String(date.getMonth() + 1);
-      const year = String(date.getFullYear());
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
 
       return (
         month === monthSelected &&
@@ -129,20 +127,44 @@ const List: React.FC<IRouteParams> = ({ match }) => {
     });
 
     setData(formatedData);
-  }, [data.length, listData, monthSelected, yearSelected, selectedFrequency]);
+  }, [
+    data.length,
+    pageDate.data,
+    monthSelected,
+    yearSelected,
+    selectedFrequency,
+  ]);
+
+  const handleMonthSelected = (month: string): void => {
+    try {
+      const parseMonth = Number(month);
+      setMonthSelected(parseMonth);
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
+  const handleYearSelected = (year: string): void => {
+    try {
+      const parseYear = Number(year);
+      setYearSelected(parseYear);
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
 
   return (
     <Container>
-      <ContentHeader title={options.title} lineColor={options.lineColor}>
+      <ContentHeader title={pageDate.title} lineColor={pageDate.lineColor}>
         <SelectInput
           options={months}
-          onChange={(e) => setMonthSelected(e.target.value)}
+          onChange={(e) => handleMonthSelected(e.target.value)}
           defaultValue={monthSelected}
         />
 
         <SelectInput
           options={years}
-          onChange={(e) => setYearSelected(e.target.value)}
+          onChange={(e) => handleYearSelected(e.target.value)}
           defaultValue={yearSelected}
         />
       </ContentHeader>
