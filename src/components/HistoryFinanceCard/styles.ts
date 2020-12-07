@@ -31,6 +31,11 @@ export const Container = styled.li`
     flex-direction: column;
     justify-content: space-between;
     padding-left: 8px;
+
+    span {
+      font-size: 22px;
+      font-weight: bold;
+    }
   }
 `;
 
@@ -38,7 +43,7 @@ export const Tag = styled.div<ITagProps>`
   position: absolute;
   left: 0;
 
-  width: 10px;
+  width: 12px;
   height: 60%;
 
   background-color: ${(props) => props.color};
