@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useCallback } from 'react';
 
+import Toggle from '../Toggle';
 import emojis from '../../utils/emojis';
-import Toogle from '../Toggle';
 
 import { useTheme } from '../../hooks/theme';
 
@@ -22,7 +22,7 @@ const MainHeader: React.FC = () => {
 
   return (
     <Container>
-      <Toogle
+      <Toggle
         labelLeft="Light"
         labelRight="Dark"
         checked={darkTheme}
