@@ -1,6 +1,23 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { ILegendProps } from '../PieChartBox/styles';
+
+const animate = keyframes`
+  0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+
+`;
 
 export const Container = styled.div`
   display: flex;
@@ -15,6 +32,8 @@ export const Container = styled.div`
   padding: 30px 20px;
 
   border-radius: 8px;
+
+  animation: ${animate} 0.8s;
 `;
 
 export const ChartContainer = styled.div`

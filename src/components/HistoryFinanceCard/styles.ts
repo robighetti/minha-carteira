@@ -1,8 +1,25 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 interface ITagProps {
   color: string;
 }
+
+const animate = keyframes`
+  0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+
+`;
 
 export const Container = styled.li`
   position: relative;
@@ -18,6 +35,8 @@ export const Container = styled.li`
   align-items: center;
 
   cursor: pointer;
+
+  animation: ${animate} 0.8s ease;
 
   transition: all 0.3s;
 
